@@ -1,0 +1,4 @@
+cd ./doc
+mkdir lima
+mkdir documents
+ls ; mkdir
