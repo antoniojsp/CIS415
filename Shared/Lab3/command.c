@@ -14,13 +14,12 @@ void writing(char* line, char* point){
 
   int value = open(point, O_RDONLY, 0644);//read only
   if (value < 0) {//checker
-   printf("Error in reader!");
+      exit(1);
   }
 
   int escribir = open("log.txt", O_CREAT | O_WRONLY | O_APPEND);//write
   if (escribir < 0) {//checker
-   printf("Error in writter!");
-
+    exit(1);
   }
 
   write(escribir, point, strlen(point));
@@ -53,12 +52,10 @@ void lfcat()
   printf("<<In lfcat(): Step-01: Fuction called>>\n");
   char path[LENGHT_PATH];//to get the path
   getcwd(path, sizeof(path));//path
-  //printf("%s\n", path);
   struct dirent *elements;//will hold the elements of the directory
   DIR *directory;
   printf("<<In lfcat(): Step-02: Listing all files in current dir.\n");
   directory = opendir (path);//open directory. Pointer to directory
-  //printf("%s\n","hola" );
 
   char **listado;// holds the words part of the line, array of string
   listado = (char**)calloc(FILES_NAMES,sizeof(char*));
@@ -67,7 +64,6 @@ void lfcat()
   }
   if (listado == NULL)// check if it's ok
   {
-    printf("FAIL");
     exit(1);
   }
 
@@ -77,8 +73,6 @@ void lfcat()
       l+=1;
   }
   for (size_t i = l-1; i>0; i--) {
-      /* code */
-      //printf("%s\n", listado[i]);
 
       if(strcmp(listado[i],"1_poem.txt")== 0 || strcmp(listado[i],"2_lyrics.txt")== 0 || strcmp(listado[i],"3_DE_Code.py")== 0 || strcmp(listado[i],"1_poem.txt")== 0){
         printf ("%s\n", listado[i]);//print the name of file in console
@@ -92,5 +86,4 @@ void lfcat()
   free(listado);
   closedir (directory);//close DIR system call
   free(line);//delete line malloc
-  //free(temp);
 }

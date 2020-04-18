@@ -33,7 +33,6 @@ int main() {
 		}
 		if (list == NULL)// check if it's ok
 		{
-			printf("FAIL");
 			exit(1);
 		}
 
@@ -50,7 +49,6 @@ int main() {
 		line_command = (char*)calloc(size,sizeof(char));//allocation by malloc and size.
 		if (line_command == NULL)// check if it's ok
 		{
-			printf("FAIL");
 			exit(1);
 		}
 
@@ -60,7 +58,6 @@ int main() {
 		parts = (char*)calloc(SIZE_TOKEN,sizeof(char));//allocation by malloc and size.
 		if (parts == NULL)// check if it's ok
 		{
-			printf("FAIL");
 			exit(1);
 		}
 		char *parte= parts;//we use this pointer to iterate since if we change the position of the pointer, we later cannot free its memory
@@ -82,7 +79,6 @@ int main() {
 			}
 			else{
 					int k = 0;// for printing the serial next to "T", for Example, "T0: mkdir lima".
-					//printf("\n");
 					while ((parte = strtok_r(line, " ", &line))){//extract tokens and put into the array of strings.
 						strcpy(list[k],parte);// copy to an array of strings,  I used it this way for reuse the code in future projects.
 						k+=1;
@@ -108,11 +104,7 @@ int main() {
 		free(list);
 		free(line_command);
 		free(parts);
-
-
-
-
-
+		
 	return 0;
 }
 /*-----------------------------Program End-----------------------------------*/
