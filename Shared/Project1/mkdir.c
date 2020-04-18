@@ -7,20 +7,33 @@
 
 struct stat st = {0};
 
+void concat(int mode, char* name){// name can be the name of the folder to creat or the path where to add.
+
+    char slash[MAX_PATH] = "/";
+    char dot[MAX_PATH] = ".";
+    //if mode 1 then
+    switch(mode){
+      case 1:
+          
+    }
+
+}
+
 int main(){
 
-    char dot[MAX_PATH] = ".";//dot to add in front of the folder to create
-    char slash[MAX_PATH] ="/";
-    char folder[MAX_PATH] = "hola";//temp name of the folder
-    char path[MAX_PATH];
-    getcwd(path, sizeof(path));//system call for path
+    char folder_name[MAX_PATH] = "./";//dot to add in front of the folder to create
+    char argumento[MAX_PATH] = "hola";//temp name of the folder, VARIABLE PASS
+    strncat(folder_name, argumento, MAX_PATH);//folder has the name of the folder to create.
+    printf("%s\n", folder_name );
 
-    char temp[MAX_PATH];//holds the path to the destination
-    strcpy(temp,strncat(path, strncat(slash,folder,MAX_PATH), MAX_PATH));//check if exist.
-    printf("%s\n",temp );
+    //char path[MAX_PATH] ="/";
+    char temp[MAX_PATH];
+    getcwd(temp, sizeof(temp));//system call for path
+    strncat(temp, folder_name, MAX_PATH);//path nopw is "/" + Path
+    printf("%s\n", temp);
     char destination[MAX_PATH];
-    strcpy(destination, strncat(dot,strncat(slash,folder,MAX_PATH),MAX_PATH));
-    printf("%s\n",destination);
+
+
 
     if (stat(temp, &st) == -1) {
       mkdir(destination, 0700);
