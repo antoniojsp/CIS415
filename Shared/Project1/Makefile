@@ -34,11 +34,21 @@ cp:
 		@rm cp
 
 cpv:
-		@gcc -o cp cp.c
+		@gcc -o cp cp.cn
 		@valgrind ./cp
 		@rm cp
 
 rm:
-		@gcc -o rm rm.c
-		@./rm /a.out
+		@gcc -o rm rm.c addons.c
+		@./rm cp
 		@rm rm
+
+mv:
+		@gcc -o mv mv.c
+		@./mv hola10.txt /media/sf_CIS415/hola1.txt
+		@rm mv
+
+cat:
+		@gcc -o cat cat.c
+		@./cat hola11.txt
+		@rm cat

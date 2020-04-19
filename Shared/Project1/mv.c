@@ -15,12 +15,12 @@ int main(int argc, char *argv[]){
 
   strcpy(entrada, argv[1]);
   strcpy(salida, argv[2]);
+  printf("%s\n",argv[2] );
 
   int read_code = -1;
   int override = 0;//ask if override the file
   int end_loop = 0;
   size_t lenght = 3;
-
 
   char* answer = (char*)calloc(lenght,sizeof(char));
   //char* answer = respuesta;
@@ -28,7 +28,7 @@ int main(int argc, char *argv[]){
   //char* line = linea;
   while(end_loop == 0){//checks if the file exists or no
       if (stat(salida, &st) == -1){
-          // needs to check that exists.
+
             int input = open(entrada, O_RDONLY);//source
             if (input < 0){//checker
                 exit(1);
@@ -44,6 +44,7 @@ int main(int argc, char *argv[]){
               line[read_code] = '\0';//to signal the end.
               write(output, line, strlen(line));//<--------------system call to write files.
             }
+            unlink(entrada);//delete file first
             override = 1;
             close(input);
             close(output);
@@ -54,7 +55,7 @@ int main(int argc, char *argv[]){
           printf("%s", "Override?(Y/N): ");//checks if it is overwritten
           getline(&answer,&lenght,stdin);
           if(strcmp(answer, "Y\n") == 0 || strcmp(answer, "y\n") == 0){
-              unlink(salida);//delete file first
+            unlink(salida);//delete file first
           }else{
               break;
           }

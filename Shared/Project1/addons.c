@@ -32,5 +32,9 @@ void sunir(int mode, char* name, char* result){// name can be the name of the fo
           strncat(path,name,MAX_PATH);
           strncat(result, path, MAX_PATH);
           break;
+      case 3:
+          strncat(slash, name, MAX_PATH);
+          strncat(result, slash, MAX_PATH);
+          break;
     }
 }
