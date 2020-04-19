@@ -38,7 +38,7 @@ int main(int argc, char *argv[]){
                 break;
             }
       }else{
-          printf("%s", "Override?(Y/N): " );
+          printf("%s", "Override?(Y/N): ");//checks if it is overwritten
           getline(&answer,&lenght,stdin);
           if(strcmp(answer, "Y\n") == 0 || strcmp(answer, "y\n") == 0){
             unlink(argv[2]);//delete file first
