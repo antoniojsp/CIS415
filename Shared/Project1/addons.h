@@ -1,2 +1,5 @@
 void free_double(char **array, int size);//free 2d array
-void sunir(int mode, char* name, char* result);//string union for paths.
+
+char* sunir(int mode, char* name);//string union for paths.
+
+char* char_string(int size);

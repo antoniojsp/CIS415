@@ -2,9 +2,7 @@
 #include <unistd.h>
 #include <stdio.h>
 #include <string.h>
-
-
-
+#include "addons.h"
 #define MAX_PATH 260//for sunir fuction. Max number of char a path can have
 
 void free_double(char **array, int size){
@@ -14,13 +12,15 @@ void free_double(char **array, int size){
     free(array);
 }
 
-void sunir(int mode, char* name, char* result){// name can be the name of the folder to creat or the path where to add.
-    char slash[MAX_PATH] = "/";
-    char dot[MAX_PATH] = ".";
-
-    char path[MAX_PATH];//path
-    getcwd(path, sizeof(path));//system call for path
-    //if mode 1 then
+char* sunir(int mode, char* name){// name can be the name of the folder to creat or the path where to add.
+    char *slash = char_string(MAX_PATH);
+    strcpy(slash, "/");
+    char* dot = char_string(MAX_PATH);
+    strcpy(dot,".");
+    char* path = char_string(MAX_PATH);//path
+    char* result = char_string(MAX_PATH);//path
+    getcwd(path, MAX_PATH);//system call for path
+    
     switch(mode){
       case 1:// add "./" + "name"
           strncat(dot,"/",MAX_PATH);
@@ -37,4 +37,13 @@ void sunir(int mode, char* name, char* result){// name can be the name of the fo
           strncat(result, slash, MAX_PATH);
           break;
     }
+
+    free(path);
+    free(dot);
+    free(slash);
+    return result;
+}
+
+char* char_string(int size){
+    return (char*)calloc(size,sizeof(char));
 }

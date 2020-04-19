@@ -3,27 +3,36 @@
 #include <sys/stat.h>//check if file is there
 #include <unistd.h>
 #include <string.h>//string copy
+#include <errno.h>
 #include "addons.h"
+
 #define MAX_PATH 260
 
 struct stat st = {0};
 
-int main(int argc, char* argv[]){
+int main(){
 
-  char* file = (char*)calloc(MAX_PATH,sizeof(char));
-  char* temp = (char*)calloc(MAX_PATH,sizeof(char));
-  strcpy(file,argv[1]);
-  sunir(3,file,temp);
+  char* file = char_string(MAX_PATH);;
+  char* temp = char_string(MAX_PATH);
 
-  printf("%s\n",file );
-  printf("%s\n", temp);
+  strcpy(file,"/media/sf_CIS415/Shared/hola1.txt");
+  temp = sunir(3,file);
+  //  "/media/sf_CIS415/hola1.txt"-> how to enter for differnent path than current.
+  if(unlink("/") == 0){
+      printf("%s\n","remove" );
+  }else{
+      printf("Error with '%s': %s\n",file, strerror(errno));
+  }
+  /*
   if (stat(temp, &st) == -1) {
       printf("%s\n","remove" );
       //unlink("a.out");
       unlink(file);
   }else{
       printf("%s\n","File doesn't exist." );
-  }
+  }*/
+
+  return 0;
 
 
 }

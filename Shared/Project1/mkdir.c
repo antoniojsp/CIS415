@@ -4,25 +4,37 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
-#include "addons.h"
+#include "addons.h"//sunir()
 #define MAX_PATH 260//max number of char allowed for directories path
 
 struct stat st = {0};
 
-int main(int argc, char *argv[]){
+int main(){
 
-    char pathway[MAX_PATH];
-    char* path = pathway;// "/yarayara/yireyire/hola"
-    char folder[MAX_PATH];
-    char* carpeta = folder;// "./hola"
-    sunir(1, argv[1], pathway);
-    sunir(2, argv[1], carpeta);
+    char* nombre = char_string(MAX_PATH);
+    strcpy(nombre, "nuevo1");
+    char* pathway;// "/yarayara/yireyire/hola"
+    char* folder;// "./hola"
+
+    pathway = sunir(2, nombre);//sunir is a personalized string concant for paths.
+    //char* ruta = pathway;
+    folder = sunir(1, nombre);
+    //char* folder = carpeta;
 
     if (stat(pathway, &st) == -1) {
-      mkdir(carpeta, 0700);
+        mkdir(folder, 0700);
     }
     else{
-      exit(1);
+      printf("%s\n","Folder already exists. Choose another name." );//not for debugging but part of the program.
+      free(nombre);
+      free(pathway);
+      free(folder);
+      exit(0);//maybe change
     }
+
+    free(nombre);
+    free(pathway);
+    free(folder);
+
     return 0;
 }
