@@ -1,19 +1,29 @@
 ls:
-		gcc -o ls ls.c addons.c
-		./ls
-		rm ls
+		@gcc -o ls ls.c addons.c
+		@./ls
+		@rm ls
 
 lsv:
-		gcc -o ls ls.c addons.c
-		valgrind ./ls
-		rm ls
+		@gcc -o ls ls.c addons.c
+		@valgrind ./ls
+		@rm ls
 
 pwd:
-		gcc -o pwd pwd.c
-		./pwd
-		rm pwd
+		@gcc -o pwd pwd.c
+		@./pwd
+		@rm pwd
 
 mkdir:
-		gcc -o mkdir mkdir.c
-		./mkdir
-		rm mkdir
+		@gcc -o mkdir mkdir.c addons.c
+		@./mkdir $(s)
+		@rm mkdir
+
+cd:
+		@gcc -o cd cd.c
+		@./cd $(s)
+		@rm cd
+
+cp:
+		@gcc -o cp cp.c
+		@./cp $(s) input.txt ./inp24.txt
+		@rm cp

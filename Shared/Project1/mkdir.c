@@ -1,45 +1,27 @@
 #include <sys/types.h>
-#include <sys/stat.h>
+#include <sys/stat.h>//check if file is there
 #include <unistd.h>
 #include <stdio.h>
 #include <string.h>
+#include "addons.h"
 #define MAX_PATH 260//max number of char allowed for directories path
 
 struct stat st = {0};
 
-void concat(int mode, char* name){// name can be the name of the folder to creat or the path where to add.
+int main(int argc, char *argv[]){
 
-    char slash[MAX_PATH] = "/";
-    char dot[MAX_PATH] = ".";
-    //if mode 1 then
-    switch(mode){
-      case 1:
-          
-    }
+    char pathway[MAX_PATH];
+    char* path = pathway;// "/yarayara/yireyire/hola"
+    char folder[MAX_PATH];
+    char* carpeta = folder;// "./hola"
+    sunir(1, argv[1], pathway);
+    sunir(2, argv[1], carpeta);
 
-}
-
-int main(){
-
-    char folder_name[MAX_PATH] = "./";//dot to add in front of the folder to create
-    char argumento[MAX_PATH] = "hola";//temp name of the folder, VARIABLE PASS
-    strncat(folder_name, argumento, MAX_PATH);//folder has the name of the folder to create.
-    printf("%s\n", folder_name );
-
-    //char path[MAX_PATH] ="/";
-    char temp[MAX_PATH];
-    getcwd(temp, sizeof(temp));//system call for path
-    strncat(temp, folder_name, MAX_PATH);//path nopw is "/" + Path
-    printf("%s\n", temp);
-    char destination[MAX_PATH];
-
-
-
-    if (stat(temp, &st) == -1) {
-      mkdir(destination, 0700);
+    if (stat(pathway, &st) == -1) {
+      mkdir(carpeta, 0700);
     }
     else{
-      printf("%s\n","error" );
+      exit(1);
     }
     return 0;
 }
