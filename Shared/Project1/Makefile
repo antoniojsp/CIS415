@@ -72,6 +72,11 @@ rmv:
 		@rm rm
 
 cat:
-		@gcc -o cat cat.c
+		@gcc -o cat cat.c addons.c
 		@./cat hola11.txt
+		@rm cat
+
+catv:
+		@gcc -o cat cat.c addons.c
+		@valgrind ./cat 
 		@rm cat

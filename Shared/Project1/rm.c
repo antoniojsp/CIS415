@@ -13,7 +13,7 @@ struct stat st = {0};
 int main(){
 
   char* file = char_string(MAX_PATH);;
-  strcpy(file,"maria");//entry point
+  strcpy(file,"aria");//entry point
   //  "/media/sf_CIS415/hola1.txt"-> how to enter for differnent path than current.
   //  hola.txt   -> current directory
   if(unlink(file) == 0){
@@ -22,6 +22,7 @@ int main(){
       printf("Error with '%s': %s\n",file, strerror(errno));//Show errors of why the file is not deleted. If it doesn't exists it will say it.
   }
 
+  free(file);
   return 0;
 
 
