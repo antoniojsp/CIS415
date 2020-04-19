@@ -3,6 +3,7 @@
 #include <unistd.h>
 #include <stdio.h>
 #include <string.h>
+#include <stdlib.h>
 #include "addons.h"
 #define MAX_PATH 260//max number of char allowed for directories path
 

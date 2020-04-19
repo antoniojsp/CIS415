@@ -32,3 +32,13 @@ cp:
 		@gcc -o cp cp.c
 		@./cp $(s) inp24.txt ./salida.txt
 		@rm cp
+
+cpv:
+		@gcc -o cp cp.c
+		@valgrind ./cp
+		@rm cp
+
+rm:
+		@gcc -o rm rm.c
+		@./rm /a.out
+		@rm rm
