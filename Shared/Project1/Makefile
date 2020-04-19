@@ -1,3 +1,8 @@
+git:
+		git add *
+		git commit -m "$(s)"
+		git push
+
 ls:
 		@gcc -o ls ls.c addons.c
 		@./ls
@@ -25,5 +30,5 @@ cd:
 
 cp:
 		@gcc -o cp cp.c
-		@./cp $(s) input.txt ./inp24.txt
+		@./cp $(s) inp24.txt ./salida.txt
 		@rm cp
