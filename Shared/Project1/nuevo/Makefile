@@ -3,15 +3,6 @@ git:
 		git commit -m "$(s)"
 		git push
 
-main:
-	@gcc -o main main.c command.c addons.c
-	@./main
-	@rm main
-mainv:
-	@gcc -o main main.c command.c addons.c
-	@ valgrind ./main
-	@rm main
-
 ls:
 		@gcc -o ls ls.c addons.c
 		@./ls
@@ -87,5 +78,5 @@ cat:
 
 catv:
 		@gcc -o cat cat.c addons.c
-		@valgrind ./cat
+		@valgrind ./cat 
 		@rm cat
