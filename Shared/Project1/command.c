@@ -201,3 +201,25 @@ void deleteFile(char *filename){
         printf("Error with '%s': %s\n",filename, strerror(errno));//Show errors of why the file is not deleted. If it doesn't exists it will say it.
     }
 }
+void displayFile(char *filename){
+
+    int read_code = -1;
+    char* line = char_string(MAX_PATH);
+    if (stat(filename, &st) != -1){
+        // needs to check that exists.
+          int input = open(filename, O_RDONLY);//source
+          if (input < 0){//checker
+              printf("Error opening '%s': %s\n",filename, strerror(errno));
+              exit(1);
+          }
+          while(read_code!=0){//if 0, then end of the file.
+            read_code = read(input, line, MAX_PATH);
+            line[read_code] = '\0';//to signal the end.
+            printf("%s\n",line);
+          }
+          close(input);
+    }else{
+        printf("%s","File doesn't exists.\n");//print statement that indicates the file is not found. It's not used for debugging but as an alert for the program itself.
+    }
+      free(line);
+}

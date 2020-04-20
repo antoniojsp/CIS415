@@ -30,10 +30,16 @@ int main(){
   strcpy(sourcePath, "salida.txt");
   strcpy(destinationPath,"/media/sf_CIS415/hola1.txt");
   moveFile(sourcePath,destinationPath); */
+  /*
   char* filename = char_string(MAX_PATH);
   strcpy(filename, "texto.txt");
   deleteFile(filename);
-  //free(sourcePath);
+  //free(sourcePath);*/
+
+  char *filename = char_string(MAX_PATH);
+  strcpy(filename, "cp.c");
+  displayFile(filename);
+
   free(filename);
 
   return 0;
