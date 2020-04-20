@@ -4,30 +4,24 @@
 #include <stdlib.h>//for callo
 #include <string.h>//for strcpy
 #include <errno.h>//error
-#include "addons.h" //for free memory
-#define MAX_DIR 100//max number of files listed
-#define BUFFER 50//number of chars
-//pwd
 #include <unistd.h>//getcwd()
-#define MAX_PATH 260//maximum number of char allowed for path
-//mkdir
-#include <sys/types.h>
+#include <sys/types.h>//
 #include <sys/stat.h>//check if file is there
-//changeDir
-#include <errno.h>
-//copyFile
+#include <errno.h>//errors codes
 #include <fcntl.h>//for open
-#include <sys/stat.h>//check if file is there
+#include "addons.h" //for free memory
+
+#define MAX_PATH 260//maximum number of char allowed for path
+
 
 struct stat st = {0};
 
 void listDir()
 {
     struct dirent *structure;
-    DIR *directory = opendir("./");//system call opendir for checking directories. It returns a pointer.
+    DIR *directory = opendir("./");//system call opendir for checking directories "./" is for the current. It returns a pointer.
     if (directory == NULL){//checker
-        printf("%s\n", strerror(errno));
-        exit(1);//for bad allocation. Terminate
+        printf("%s\n", strerror(errno));//
     }
     while ((structure = readdir(directory)) != NULL){//
         printf("%s\n", structure->d_name);//printing files in the directory. d_name hint from the project1 description.
@@ -43,13 +37,14 @@ void showCurrentDir()
    free(path);
 }
 
-void makeDir(char *dirName){
-
-    char* pathway;// "/yarayara/yireyire/hola"
-    char* folder;// "./hola"
-
-    pathway = sunir(2, dirName);//sunir is a personalized string concant for paths.
-    folder = sunir(1, dirName);
+void makeDir(char *dirName)
+{
+    char* pathway = char_string(MAX_PATH);// "/yarayara/yireyire/hola"
+    char* folder = char_string(MAX_PATH);;// "./hola"
+    //pathway = sunir(2, dirName);//sunir is a personalized string concant for paths.
+    //folder = sunir(1, dirName);
+    strcpy(pathway,sunir(2, dirName));
+    strcpy(folder,sunir(1, dirName));
 
     if (stat(pathway, &st) == -1) {
         mkdir(folder, 0700);
@@ -61,14 +56,12 @@ void makeDir(char *dirName){
       exit(0);//maybe change
     }
 
-    //free(nombre);
     free(pathway);
     free(folder);
 }
 
-void changeDir(char *dirName){
-    //char *move = char_string(MAX_PATH);
-    //strcpy(move, "nuevo" );
+void changeDir(char *dirName)
+{
     if(chdir(dirName) == 0){//change for variable http://man7.org/linux/man-pages/man2/chdir.2.html
       //chdir return 0 if ok or 1 if any error is found. errno
       printf("Moved to %s\n", getcwd(dirName, MAX_PATH));//confirmation for moving. NO DEBBUGING.
@@ -77,14 +70,8 @@ void changeDir(char *dirName){
     }
 }
 
-void copyFile(char *sourcePath, char *destinationPath){
-/*
-  char *sourcePath = char_string(MAX_PATH);
-  char *salida = char_string(MAX_PATH);
-
-  strcpy(sourcePath, "hola11.txt");
-  strcpy(salida, "./salida.txt");*/
-
+void copyFile(char *sourcePath, char *destinationPath)
+{
   int read_code = -1;
   int override = 0;//ask if override the file
   int end_loop = 0;
@@ -98,8 +85,7 @@ void copyFile(char *sourcePath, char *destinationPath){
           printf("File not found.\n");
           break;
       }
-      else if(stat(destinationPath, &st) == -1){
-          // needs to check that exists.
+      else if(stat(destinationPath, &st) == -1){// needs to check that exists.
           int input = open(sourcePath, O_RDONLY);//source
           if (input < 0){//checker
               printf("Error opening '%s': %s\n",sourcePath, strerror(errno));//report error
@@ -146,9 +132,7 @@ void moveFile(char *sourcePath, char *destinationPath){
   size_t lenght = 3;
 
   char* answer = (char*)calloc(lenght,sizeof(char));
-  //char* answer = respuesta;
   char* line =(char*)calloc(MAX_PATH,sizeof(char));
-  //char* line = linea;
   while(end_loop == 0){//checks if the file exists or no
       if(stat(sourcePath, &st) == -1){
           printf("%s\n",  "File not found." );
@@ -196,7 +180,6 @@ void deleteFile(char *filename){
     //  "/media/sf_CIS415/hola1.txt"-> how to enter for differnent path than current.
     //  hola.txt   -> current directory
     if(unlink(filename) == 0){
-
     }else{
         printf("Error with '%s': %s\n",filename, strerror(errno));//Show errors of why the file is not deleted. If it doesn't exists it will say it.
     }

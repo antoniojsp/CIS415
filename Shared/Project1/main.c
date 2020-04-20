@@ -6,7 +6,14 @@
 #define MAX_PATH 260
 int main(){
 
-  //listDir();
+  listDir();
+  char* cambio = char_string(MAX_PATH);
+  strcpy(cambio,"..");
+  changeDir(cambio);
+  printf("%s\n","//////////////////////////////////" );
+  listDir();
+
+
   //showCurrentDir();
 
   //char* nombre = char_string(MAX_PATH);
@@ -35,12 +42,12 @@ int main(){
   strcpy(filename, "texto.txt");
   deleteFile(filename);
   //free(sourcePath);*/
-
+/*
   char *filename = char_string(MAX_PATH);
   strcpy(filename, "cp.c");
   displayFile(filename);
 
-  free(filename);
+  free(filename);*/
 
   return 0;
 }
