@@ -14,35 +14,27 @@
 #include <stdlib.h>
 #include <string.h>
 #include "command.h"
+#include "addons.h"
 
 #define BUFFER_SIZE 500//number of characteres
 #define TOKEN_LIST 500// number of tokens per command
-#define LIST_COMMANDS 100
+#define LIST_COMMANDS 30
 #define SIZE_TOKEN 50
 
-int main() {
+int main(){
 
 		/* Main Function Variables */
 		int exit_loop = 0;// value to exit loop.
-		/* Allocate memory for the input buffer. */
-		//malloc array of strings to gold
-		char **list;// holds the words part of the line, array of string
-		list = (char**)calloc(TOKEN_LIST,sizeof(char*));
-		for(int i = 0; i < TOKEN_LIST; i++) {
-		  list[i] = (char*)calloc(BUFFER_SIZE,sizeof(char));
-		}
-		if (list == NULL)// check if it's ok
-		{
-			exit(1);
-		}
 
-		//space allocate to storage the list of commands for out program
+		char **list = array_2d(LIST_COMMANDS, BUFFER_SIZE);// holds the words part of the line, array of string
+
 
 		//start of list of commands avalaible.
 		char list_commands[20] = "lfcat\n";//command for lab3
 		char *comandos = list_commands;
 		//printf("%s", list_commands[0]);
 		//end of list of commands
+
 
 		char *line_command;// command that it is input
 		size_t size = BUFFER_SIZE;//size of allocation
@@ -61,6 +53,24 @@ int main() {
 			exit(1);
 		}
 		char *parte= parts;//we use this pointer to iterate since if we change the position of the pointer, we later cannot free its memory
+
+
+
+		char** command_list = array_2d(TOKEN_LIST, BUFFER_SIZE);//hold all the commands.
+		command_list[0] = "ls\n";
+		command_list[1] = "pwd\n";
+		command_list[2] = "mkdir\n";
+		command_list[3] = "cd\n";
+		command_list[4] = "cp\n";
+		command_list[5] = "mv\n";
+		command_list[6] = "rm\n";
+		command_list[7] = "cat\n";
+		command_list[8] = "-f\n";
+
+
+
+
+
 
 		while (exit_loop == 0){//checks for exit command
 			printf(">>>");
@@ -99,12 +109,14 @@ int main() {
 		}
 
 		//free memory
+		//free_double(command_list, LIST_COMMANDS);
+
 		for(int i = 0; i<TOKEN_LIST; i++)
 				free(list[i]);
 		free(list);
 		free(line_command);
 		free(parts);
-		
+
 	return 0;
 }
 /*-----------------------------Program End-----------------------------------*/

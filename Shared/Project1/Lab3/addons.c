@@ -2,11 +2,11 @@
 #include <unistd.h>
 #include <stdio.h>
 #include <string.h>
-#include "addons.h"
 #define MAX_PATH 260//for sunir fuction. Max number of char a path can have
 
+
 void free_double(char **array, int size){
-    for (int i = 0; i < size; i++) {
+    for (size_t i = 0; i < size; i++) {
         free(array[i]);
     }
     free(array);
@@ -47,6 +47,7 @@ char* sunir(int mode, char* name){// name can be the name of the folder to creat
 char* char_string(int size){
     return (char*)calloc(size,sizeof(char));
 }
+
 char** array_2d(int size, int buffer)
 {
 	char** array = (char**)calloc(size,sizeof(char*));

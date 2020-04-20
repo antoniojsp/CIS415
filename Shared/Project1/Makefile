@@ -7,6 +7,7 @@ main:
 	@gcc -o main main.c command.c addons.c
 	@./main
 	@rm main
+
 mainv:
 	@gcc -o main main.c command.c addons.c
 	@ valgrind ./main

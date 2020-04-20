@@ -24,7 +24,7 @@ void listDir()
         printf("%s\n", strerror(errno));//
     }
     while ((structure = readdir(directory)) != NULL){//
-        printf("%s\n", structure->d_name);//printing files in the directory. d_name hint from the project1 description.
+        printf("%s ", structure->d_name);//printing files in the directory. d_name hint from the project1 description.
     }
     closedir(directory);
 }
