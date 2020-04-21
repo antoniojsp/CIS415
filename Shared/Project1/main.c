@@ -23,39 +23,34 @@ int main(){
       size_t size = BUFFER;
 
       while(exit_loop == 0){
-
           printf("%s",">>>");
-
           getline(&line_command, &size, stdin);
           strcpy(linea,line_command);
           char*line = linea;
-
           int number_commands = 0;// for printing the serial next to "T", for Example, "T0: mkdir lima".
           while ((parte = strtok_r(line, ";", &line))){//extract tokens and put into the array of strings.
             strcpy(list[number_commands],parte);// copy to an array of strings,  I used it this way for reuse the code in future projects.
             number_commands+=1;
           }
-
           for (int i = 0; i < number_commands; i++) {
-                //printf("%d\n", i);
                 char** token = array_2d(LIST_INPUT, BUFFER);
                 char* temp = char_string(BUFFER);
                 strcpy(temp,list[i]);
                 char* temporal = temp;
-                //printf("%s\n",temporal);
 
-                int k = 0;
+                int number_tokens = 0;
                 while ((parte = strtok_r(temporal, " ", &temporal))){//extract tokens and put into the array of strings.
-                  strcpy(token[k],parte);// copy to an array of strings,  I used it this way for reuse the code in future projects.
-                  k+=1;
+                  strcpy(token[number_tokens],parte);// copy to an array of strings,  I used it this way for reuse the code in future projects.
+                  number_tokens+=1;
                 }
-    /*            for (size_t h = 0; h < k; h++) {
-                  printf("%s\n", token[h]);
-                }*/
 
+                int control = calls(token,number_tokens);//function  that checks control code.
+
+                if(control == 1){
                 if(strcmp(token[0],"exit\n") == 0 || strcmp(token[0],"exit\0") == 0){
-                    if(strcmp(token[1],"\0") == 0)
+                    if(strcmp(token[1],"\0") == 0){
                       exit_loop = 1;
+                    }
                     else{
                       printf("Error!: Unsupported parameter for command: %s\n",token[0]);
                     }
@@ -72,55 +67,96 @@ int main(){
                 }
                 else if(strcmp(token[0],"pwd\n") == 0 || strcmp(token[0],"pwd\0") == 0 ){//check for empty lines.
                   if(strcmp(token[1],"\0") == 0)
+                  {
                     showCurrentDir();
+                  }
                   else{
                     printf("Error!: Unsupported parameter for command: %s\n",token[0]);
                   }
                 }
 
                 else if(strcmp(token[0],"mkdir\n") == 0 || strcmp(token[0],"mkdir\0") == 0 ){//check for empty lines.
-                  if(strcmp(token[1],"\n") != 0 && strcmp(token[2],"\0") != 0){
-                    printf("%s\n","Too many arguments." );
-                  }
-                  else if(strcmp(token[1],"\0") != 0)
+
+
+                  if(strcmp(token[1],"\0") != 0 && strcmp(token[2],"\0") == 0)
+
                     makeDir(token[1]);
                   else{
                     printf("Error!: Unsupported parameter for command: %s\n",list[0]);
                   }
                 }
 
-                else if((strcmp(strcmp(token[0],"cd\n") == 0 || strcmp(token[0],"cd\0") == 0){//check for empty lines.
-                    printf("%s","3");
-                }/*
-                else if((strcmp(list[0],list_commands[4])) == 0){//check for empty lines.
-                    printf("%s","4");
+                else if(strcmp(token[0],"cd\n") == 0 || strcmp(token[0],"cd\0") == 0){//check for empty lines.
+
+                    if(strcmp(token[1],"\n") != 0 && strcmp(token[2],"\0") == 0 && strcmp(token[2],"\0") == 0){
+                      changeDir(token[1]);
+                    }
+                    else{
+                      printf("Error!: Unsupported parameter for command: %s\n",list[0]);
+                    }
                 }
-                else if((strcmp(list[0],list_commands[5])) == 0){//check for empty lines.
-                    printf("%s","5");
+                else if(strcmp(token[0],"cp\n") == 0 || strcmp(token[0],"cp\0")==0){//check for empty lines.
+
+                  if(strcmp(token[2],"\0") != 0 && strcmp(token[3],"\0") == 0){
+                    copyFile(token[1], token[2]);
+                  }
+                  else{
+                    printf("Error!: Unsupported parameter for command: %s\n",token[0]);
+                  }
                 }
-                else if((strcmp(list[0],list_commands[6])) == 0){//check for empty lines.
-                    printf("%s","6");
+
+                else if(strcmp(token[0],"mv\n") == 0 || strcmp(token[0],"mv\0") == 0){//check for empty lines.
+                  if( strcmp(token[2],"\0") != 0 && strcmp(token[3],"\0") == 0){
+                    moveFile(token[1], token[2]);
+                  }
+                  else{
+                    printf("Error!: Unsupported parameter for command: %s\n",token[0]);
+                  }
+
                 }
-                else if((strcmp(list[0],list_commands[7])) == 0){//check for empty lines.
-                    printf("%s","7");
+                else if(strcmp(token[0],"rm\n") == 0 || strcmp(token[0],"rm\0") == 0){//check for empty lines.
+
+                  if(strcmp(token[1],"\0") != 0 && strcmp(token[2],"\0") == 0)
+                    deleteFile(token[1]);
+                  else{
+                    printf("Error!: Unsupported parameter for command: %s\n",token[0]);
+                  }
                 }
-*/
+
+                else if(strcmp(token[0],"cat\n") == 0 || strcmp(token[0],"cat\0") == 0){//check for empty lines.
+
+                  if(strcmp(token[1],"\0") != 0 && strcmp(token[2],"\0") == 0){
+                      displayFile(token[1]);
+                  }
+                  else {
+                    printf("Error!: Unsupported parameter for command: %s\n",token[0]);
+                  }
+                }
+
                 else{//check for empty lines.
 
                     printf("Error! Unrecognized command: %s\n", token[0]);
                 }
-                free_double(token, LIST_INPUT);
-                free(temp);
-        }
 
 
-      }
+              }
+              else{
+                printf("Error! Incorrect syntax. No control codefound,\n");
+              }
+              free_double(token, LIST_INPUT);
+              free(temp);
+          }
+        
+    }
 
 
       free_double(list_commands, COMMAND_LIST);
       free_double(list, LIST_INPUT);
       free(line_command);
       free(parts);
+      free(linea);
+      free(pieza);
+
 
   return 0;
 }

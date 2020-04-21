@@ -4,6 +4,8 @@
 #include <string.h>
 #include "addons.h"
 #define MAX_PATH 260//for sunir fuction. Max number of char a path can have
+#define BUFFER_LENGHT 200
+#define LISTA_COMANDOS 9
 
 void free_double(char **array, int size){
     for (int i = 0; i < size; i++) {
@@ -55,4 +57,48 @@ char** array_2d(int size, int buffer)
 			array[i] = (char*)calloc(buffer,sizeof(char));
 	}
 	return array;
+}
+
+int calls(char** list, int size){
+
+    char** list_init = array_2d(MAX_PATH, BUFFER_LENGHT);
+    strcpy(list_init[0],"ls\0");
+    strcpy(list_init[1],"pwd\0");
+    strcpy(list_init[2],"mkdi\0");
+    strcpy(list_init[3],"cd\0");
+    strcpy(list_init[4],"cp\0");
+    strcpy(list_init[5],"mv\0");
+    strcpy(list_init[6],"rm\0");
+    strcpy(list_init[7],"cat\0");
+    strcpy(list_init[8],"exit\0");
+
+    char** list_rest = array_2d(MAX_PATH, BUFFER_LENGHT);
+    strcpy(list_rest[0],"ls\n");
+    strcpy(list_rest[1],"pwd\n");
+    strcpy(list_rest[2],"mkdir\n");
+    strcpy(list_rest[3],"cd\n");
+    strcpy(list_rest[4],"cp\n");
+    strcpy(list_rest[5],"mv\n");
+    strcpy(list_rest[6],"rm\n");
+    strcpy(list_rest[7],"cat\n");
+    strcpy(list_rest[8],"exit\n");
+
+    int resultados[LISTA_COMANDOS] = {0,0,0,0,0,0,0,0,0};
+    for (int i = 0; i < size; i++){
+        for (int j = 0; j < LISTA_COMANDOS; j++) {
+          if(strcmp(list[i],list_init[j]) == 0 || strcmp(list[i],list_rest[j]) == 0){
+            resultados[j]++;
+          }
+        }
+    }
+    int suma = 0;
+    for (size_t i = 0; i < LISTA_COMANDOS; i++) {
+        suma+=resultados[i];
+    }
+
+    free_double(list_init, MAX_PATH);
+    free_double(list_rest, MAX_PATH);
+
+    return suma;
+
 }

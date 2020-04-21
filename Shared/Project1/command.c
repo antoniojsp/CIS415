@@ -40,37 +40,48 @@ void showCurrentDir()
 
 void makeDir(char *dirName)
 {
-    char* pathway = char_string(MAX_PATH);// "/yarayara/yireyire/hola"
-    char* folder = char_string(MAX_PATH);;// "./hola"
+    dirName[strlen(dirName)-1]=0;
+    //char* pathway = char_string(MAX_PATH);// "/yarayara/yireyire/hola"
+    char* folder = char_string(MAX_PATH);// "./hola"
     //pathway = sunir(2, dirName);//sunir is a personalized string concant for paths.
     //folder = sunir(1, dirName);
-    strcpy(pathway,sunir(2, dirName));
-    strcpy(folder,sunir(1, dirName));
+    //strcpy(pathway,sunir(2, dirName));
+    char* temp = sunir(1, dirName);
+    strcpy(folder,temp);
 
-    if (stat(pathway, &st) == -1) {
-        mkdir(folder, 0700);
+    //if (stat(pathway, &st) == -1) {
+    if(mkdir(folder, 0700)==0){
     }
     else{
-      printf("%s\n","Folder already exists. Choose another name." );//not for debugging but part of the program.
-      
-    }
+      printf("Unable to access %s: %s\n",dirName, strerror(errno));//not for debugging but part of the program.
 
-    free(pathway);
+    }
+    //free(pathway);
     free(folder);
+    free(temp);
 }
 
-void changeDir(char *dirName)
+void changeDir(char *dirName)//check aqui
 {
-    if(chdir(dirName) == 0){//change for variable http://man7.org/linux/man-pages/man2/chdir.2.html
-      //chdir return 0 if ok or 1 if any error is found. errno
-      printf("Moved to %s\n", getcwd(dirName, MAX_PATH));//confirmation for moving. NO DEBBUGING.
-    }else{
-      printf("Unable to access %s: %s\n",dirName, strerror(errno));//report error
-    }
+  dirName[strlen(dirName)-1]=0;
+
+
+  int change =chdir(dirName);//change for variable http://man7.org/linux/man-pages/man2/chdir.2.html
+    //chdir return 0 if ok or 1 if any error is found. errno
+  if (change==0){
+    printf("Moved to %s\n", dirName );
+  }
+  else{
+    printf("Cannot moved. %s\n",strerror(errno));
+  }
+
 }
 
 void copyFile(char *sourcePath, char *destinationPath)
 {
+  //sourcePath[strlen(sourcePath)-1] = 0;
+  destinationPath[strlen(destinationPath)-1]= 0;
+
   int read_code = -1;
   int override = 0;//ask if override the file
   int end_loop = 0;
@@ -117,7 +128,6 @@ void copyFile(char *sourcePath, char *destinationPath)
           }
       }
     }
-
     free(answer);
     free(line);
 
@@ -125,16 +135,21 @@ void copyFile(char *sourcePath, char *destinationPath)
 
 void moveFile(char *sourcePath, char *destinationPath){
 
+  sourcePath[strlen(sourcePath)]=0;//clean the end and set it to 0 to signal the end.
+  destinationPath[strlen(destinationPath)-1]=0;
+  //strcpy(sourcePath, "ejemplo.txt");
+  //strcpy(destinationPath, "maria.txt");
+  printf("%s %s\n",sourcePath, destinationPath );
   int read_code = -1;
   int override = 0;//ask if override the file
   int end_loop = 0;
   size_t lenght = 3;
 
-  char* answer = (char*)calloc(lenght,sizeof(char));
-  char* line =(char*)calloc(MAX_PATH,sizeof(char));
+  char* answer = char_string(lenght);
+  char* line =char_string(MAX_PATH);
   while(end_loop == 0){//checks if the file exists or no
       if(stat(sourcePath, &st) == -1){
-          printf("%s\n",  "File not found." );
+          printf("%s\n",  "Source file not found." );//checker to see if the file exists.
           break;
           }
       else if (stat(destinationPath, &st) == -1){
@@ -170,7 +185,6 @@ void moveFile(char *sourcePath, char *destinationPath){
           }
       }
     }
-
     free(answer);
     free(line);
 }
@@ -178,13 +192,15 @@ void moveFile(char *sourcePath, char *destinationPath){
 void deleteFile(char *filename){
     //  "/media/sf_CIS415/hola1.txt"-> how to enter for differnent path than current.
     //  hola.txt   -> current directory
+    filename[strlen(filename)-1]=0;
     if(unlink(filename) == 0){
     }else{
         printf("Error with '%s': %s\n",filename, strerror(errno));//Show errors of why the file is not deleted. If it doesn't exists it will say it.
     }
 }
-void displayFile(char *filename){
-
+void displayFile(char *filename)
+{
+    filename[strlen(filename)-1]=0;
     int read_code = -1;
     char* line = char_string(MAX_PATH);
     if (stat(filename, &st) != -1){
@@ -203,5 +219,6 @@ void displayFile(char *filename){
     }else{
         printf("%s","File doesn't exists.\n");//print statement that indicates the file is not found. It's not used for debugging but as an alert for the program itself.
     }
-      free(line);
+    free(line);
+    //free(archivo);
 }
