@@ -6,7 +6,8 @@
 #define COMMAND_LIST 20//list of commads avalaible
 #define LIST_INPUT 50//number of tokens
 #define BUFFER 100//how many characters per line
-#define TOKEN_BUFFER 20
+#define TOKEN_BUFFER 100
+#define LINES 500//for the file reader. File MODE. It can accept up to 500 lines of instructions from the file.
 
 int main(){
 
@@ -22,17 +23,51 @@ int main(){
       char* pieza = char_string(TOKEN_BUFFER);
       size_t size = BUFFER;
 
+      //FILE MODE
+      char** file_mode = array_2d(LINES, BUFFER);
+      char* modo = char_string(10);//
+      strcpy(modo, "-f");
+
+      if(strcmp(modo,"-f")==0){
+        printf("%s\n", "aaa");
+          FILE *file_reader = fopen("input.txt", "r");
+          if (file_reader == NULL){// if no input.txt found
+            exit(1);
+          }
+
+          int lineas_file=0;
+          char buffer[BUFFER];
+          while(fgets(buffer,TOKEN_BUFFER, file_reader) != NULL){
+                strcpy(file_mode[lineas_file],buffer);
+              lineas_file+=1;
+          }
+          fclose(file_reader);
+      }
+
+
+
+      int modo_archivo = 0;
       while(exit_loop == 0){
           printf("%s",">>>");
-          getline(&line_command, &size, stdin);
-          strcpy(linea,line_command);
+          if(strcmp(modo,"-f")!=0){
+            getline(&line_command, &size, stdin);
+            strcpy(linea,line_command);
+          }
+          else{
+            strcpy(linea,file_mode[modo_archivo]);
+          }
+
           char*line = linea;
           int number_commands = 0;// for printing the serial next to "T", for Example, "T0: mkdir lima".
           while ((parte = strtok_r(line, ";", &line))){//extract tokens and put into the array of strings.
             strcpy(list[number_commands],parte);// copy to an array of strings,  I used it this way for reuse the code in future projects.
             number_commands+=1;
           }
-          for (int i = 0; i < number_commands; i++) {
+          for (size_t i = 0; i < number_commands; i++) {
+            /* code */
+            printf("%s\n",list[i] );
+          }
+         for (int i = 0; i < number_commands; i++) {/*
                 char** token = array_2d(LIST_INPUT, BUFFER);
                 char* temp = char_string(BUFFER);
                 strcpy(temp,list[i]);
@@ -145,17 +180,19 @@ int main(){
               }
               free_double(token, LIST_INPUT);
               free(temp);
-          }
-        
+*/
+
+        }
+          modo_archivo++;
     }
 
-
-      free_double(list_commands, COMMAND_LIST);
-      free_double(list, LIST_INPUT);
-      free(line_command);
-      free(parts);
-      free(linea);
-      free(pieza);
+    free_double(list_commands, COMMAND_LIST);
+    free_double(list, LIST_INPUT);
+    free_double(file_mode,LINES);
+    free(line_command);
+    free(parts);
+    free(linea);
+    free(pieza);
 
 
   return 0;
