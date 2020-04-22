@@ -5,10 +5,20 @@ git:
 
 main:
 	@gcc -o pseudu-shell main.c command.c addons.c
-	@./pseudu-shell $(s)
+	@./pseudu-shell
 	@rm pseudu-shell
 
 mainv:
 	@gcc -o pseudu-shell main.c command.c addons.c
-	@ valgrind ./pseudu-shell $(s)
+	@ valgrind ./pseudu-shell
+	@rm pseudu-shell
+
+mainf:
+	@gcc -o pseudu-shell main.c command.c addons.c
+	@./pseudu-shell -f
+	@rm pseudu-shell
+
+mainvf:
+	@gcc -o pseudu-shell main.c command.c addons.c
+	@ valgrind ./pseudu-shell -f
 	@rm pseudu-shell

@@ -103,8 +103,8 @@ int calls(char** list, int size){
 
     return suma;
 }
-/*
-char* extract_name(char* name){
+
+char* extract_name(char* name){//when we ewnter "." we indicate that the copy is to the current directory. Extract the name of the file from the source.
 
   char** token = array_2d(ARCHIVO, BUFFER_LENGHT);
   char* parts = char_string(BUFFER_LENGHT);//divided by ;
@@ -124,4 +124,4 @@ char* extract_name(char* name){
   free_double(token,ARCHIVO);
 
   return result;
-}*/
+}

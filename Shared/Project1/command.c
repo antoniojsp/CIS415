@@ -54,22 +54,24 @@ void changeDir(char *dirName)//check aqui
 {
   char* temp= char_string(100);
   strcpy(temp,dirName);
-
-  printf("%s\n",temp );
   int change = chdir(temp);//change for variable http://man7.org/linux/man-pages/man2/chdir.2.html
     //chdir return 0 if ok or 1 if any error is found. errno
   if (change!=0){//if sucessful, chdir() returns 0.
     printf("%s\n",strerror(errno));
   }
+  free(temp);
 }
 void copyFile(char *sourcePath, char *destinationPath)
 {
-  destinationPath[strlen(destinationPath)-1]= 0;//clean last character
+  char* filename = extract_name(sourcePath);
+  if(strcmp(destinationPath, ".\0")==0){
+      strcpy(destinationPath, filename);
+  }
+
   int read_code = -1;
   int override = 0;//ask if override the file
   int end_loop = 0;//loop ending signal
   size_t lenght = 3;
-
   char* answer = char_string(MAX_PATH);
   char* line = char_string(MAX_PATH);
   while(end_loop == 0){//checks if the file exists or no
@@ -78,8 +80,7 @@ void copyFile(char *sourcePath, char *destinationPath)
       }
       else if(stat(destinationPath, &st) == -1){// needs to check that exists.
           int input = open(sourcePath, O_RDONLY);//source
-          if (input < 0){//checker
-              //printf("Error opening '%s': %s\n",sourcePath, strerror(errno));//report errors with the errno.h. Tells us what kind of problem happened.
+          if (input < 0){//chec
               break;
           }
 
@@ -104,6 +105,7 @@ void copyFile(char *sourcePath, char *destinationPath)
           getline(&answer,&lenght,stdin);
           if(strcmp(answer, "Y\n") == 0 || strcmp(answer, "y\n") == 0){
               unlink(destinationPath);//delete file first
+              break;
           }else{
               break;
           }
@@ -111,11 +113,10 @@ void copyFile(char *sourcePath, char *destinationPath)
     }
     free(answer);
     free(line);
+    free(filename);
+
 }
 void moveFile(char *sourcePath, char *destinationPath){
-
-  sourcePath[strlen(sourcePath)]=0;//clean the end and set it to 0 to signal the end.
-  destinationPath[strlen(destinationPath)-1]=0;
 
   int read_code = -1;
   int override = 0;//ask if override the file
@@ -168,16 +169,11 @@ void moveFile(char *sourcePath, char *destinationPath){
 void deleteFile(char *filename){
     //  "/media/sf_CIS415/hola1.txt"-> how to enter for differnent path than current.
     //  hola.txt   -> current directory
-    filename[strlen(filename)-1]=0;
-    if(unlink(filename) != 0){
-        printf("%s\n", strerror(errno));//Show errors of why the file is not deleted. If it doesn't exists it will say it.
-    }
+    unlink(filename);//function call that delete the name from the file systen. http://man7.org/linux/man-pages/man2/unlink.2.html
 }
 
 void displayFile(char *filename)
 {
-    filename[strlen(filename)-1]=0;
-
     int read_code = -1;
     char* line = char_string(MAX_PATH);
     if (stat(filename, &st) != -1){
@@ -189,9 +185,6 @@ void displayFile(char *filename)
             printf("%s\n",line);
           }
           close(input);
-    }else{
-        printf("%s",strerror(errno));//print statement that indicates the file is not found. It's not used for debugging but as an alert for the program itself.
     }
-
     free(line);
 }

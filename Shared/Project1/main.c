@@ -80,16 +80,17 @@ int main(int argc, char* argv[]){
                   number_tokens+=1;
                 }
 
-                //printf("%d\n", number_tokens);
                 int control = calls(token,number_tokens);//function  that checks control code. If has 1 means there is only one command in the line, more than 1 is a code control error.
-
-                if (i == number_commands-1 && number_tokens > 1){// cleans the string if it is needed. The last character may interfere with the code.
+                if (i == number_commands-1 && number_tokens > 2){// cleans the string if it is needed. The last character may interfere with the code.
+                    token[2][strlen(token[2])-1] = 0;
+                }
+                else if (i == number_commands-1 && number_tokens > 1){// cleans the string if it is needed. The last character may interfere with the code.
                     token[1][strlen(token[1])-1] = 0;
                 }
 
                 if(control == 1 || control == 0  ){
-                    if(strcmp(token[0],"exit\n") == 0 || strcmp(token[0],"exit\0") == 0){
-                        if(strcmp(token[1],"\0") == 0){
+                    if(strcmp(token[0],"exit\n") == 0 || strcmp(token[0],"exit\0" ) == 0){
+                        if(number_tokens == 1){
                           exit_loop = 1;
                         }
                         else{
@@ -99,15 +100,16 @@ int main(int argc, char* argv[]){
                     else if((strcmp(token[0],"\n"))==0){//check for empty lines.
                         printf("%s","");
                     }
-                    else if(strcmp(token[0],"ls\n") == 0 || strcmp(token[0],"ls\0") == 0 ){//check for empty lines.
-                      if(strcmp(token[1],"\0") == 0)
+
+                    else if(strcmp(token[0],"ls\n") == 0 || strcmp(token[0],"ls\0") == 0){//check for empty lines.
+                      if(number_tokens == 1)
                         listDir();
                       else{
                         printf("Error!: Unsupported parameter for command: %s\n",token[0]);
                       }
                     }
-                    else if(strcmp(token[0],"pwd\n") == 0 || strcmp(token[0],"pwd\0") == 0 ){//check for empty lines.
-                      if(strcmp(token[1],"\0") == 0)
+                    else if((strcmp(token[0],"pwd\n") == 0 || strcmp(token[0],"pwd\0") == 0) && number_tokens < 2 ){//check for empty lines.
+                      if(number_tokens == 1)
                       {
                         showCurrentDir();
                       }
@@ -115,9 +117,10 @@ int main(int argc, char* argv[]){
                         printf("Error!: Unsupported parameter for command: %s\n",token[0]);
                       }
                     }
-                    else if(strcmp(token[0],"mkdir\n") == 0 || strcmp(token[0],"mkdir\0") == 0 ){//check for empty lines.
-                      if(strcmp(token[1],"\0") != 0 && strcmp(token[2],"\0") == 0)
+                    else if(strcmp(token[0],"mkdir\n") == 0 || strcmp(token[0],"mkdir\0") == 0){//check for empty lines.
+                      if(number_tokens = 2){
                         makeDir(token[1]);
+                      }
                       else{
                         printf("Error!: Unsupported parameter for command: %s\n",list[0]);
                       }
@@ -125,7 +128,7 @@ int main(int argc, char* argv[]){
 
                     else if(strcmp(token[0],"cd\n") == 0 || strcmp(token[0],"cd\0") == 0){//check for empty lines.
 
-                        if(strcmp(token[1],"\n") != 0 && strcmp(token[2],"\0") == 0 && strcmp(token[2],"\0") == 0){
+                        if(number_tokens == 2){
                           changeDir(token[1]);
                         }
                         else{
@@ -134,7 +137,7 @@ int main(int argc, char* argv[]){
                     }
 
                     else if(strcmp(token[0],"cp\n") == 0 || strcmp(token[0],"cp\0")==0){//check for empty lines.
-                      if(strcmp(token[2],"\0") != 0 && strcmp(token[3],"\0") == 0){
+                      if(number_tokens == 3){
                         copyFile(token[1], token[2]);
                       }
                       else{
@@ -143,7 +146,7 @@ int main(int argc, char* argv[]){
                     }
 
                     else if(strcmp(token[0],"mv\n") == 0 || strcmp(token[0],"mv\0") == 0){//check for empty lines.
-                      if( strcmp(token[2],"\0") != 0 && strcmp(token[3],"\0") == 0){
+                      if( number_tokens == 3){
                         moveFile(token[1], token[2]);
                       }
                       else{
@@ -153,7 +156,7 @@ int main(int argc, char* argv[]){
 
                     else if(strcmp(token[0],"rm\n") == 0 || strcmp(token[0],"rm\0") == 0){//check for empty lines.
 
-                      if(strcmp(token[1],"\0") != 0 && strcmp(token[2],"\0") == 0)
+                      if(number_tokens == 2)
                         deleteFile(token[1]);
                       else{
                         printf("Error!: Unsupported parameter for command: %s\n",token[0]);
@@ -162,7 +165,7 @@ int main(int argc, char* argv[]){
 
                     else if(strcmp(token[0],"cat\n") == 0 || strcmp(token[0],"cat\0") == 0){//check for empty lines.
 
-                      if(strcmp(token[1],"\0") != 0 && strcmp(token[2],"\0") == 0){
+                      if(number_tokens == 2){
                           displayFile(token[1]);
                       }
                       else {
