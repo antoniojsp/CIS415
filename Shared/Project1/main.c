@@ -45,7 +45,7 @@ int main(int argc, char* argv[]){
                 strcpy(file_mode[lineas_file],buffer);
               lineas_file+=1;
           }
-          fclose(file_reader);
+          fclose(file_reader);// fclose allowed for main.
       }
 
     int modo_archivo = 0;// when -f is activated

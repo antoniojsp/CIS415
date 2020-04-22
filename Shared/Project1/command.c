@@ -19,9 +19,9 @@ void listDir()
 {
     struct dirent *structure;
     DIR *directory = opendir("./");//system call opendir for checking directories "./" is for the current. It returns a pointer.
-    if (directory == NULL){//checker
-        printf("%s\n", strerror(errno));//
-    }
+    //if (directory == NULL){//checker To check if the
+      //  printf("%s\n", strerror(errno));
+  //  }
     while ((structure = readdir(directory)) != NULL){//
         printf("%s ", structure->d_name);//printing files in the directory. d_name hint from the project1 description.
     }
@@ -44,8 +44,8 @@ void makeDir(char *dirName)
     char* temp = sunir(1, dirName);
     strcpy(folder,temp);
     //printf("%s\n", folder );
-    if(mkdir(folder, 0700)==0){
-    }
+    mkdir(folder, 0700);
+
     free(folder);
     free(temp);
 }
@@ -56,9 +56,9 @@ void changeDir(char *dirName)//check aqui
   strcpy(temp,dirName);
   int change = chdir(temp);//change for variable http://man7.org/linux/man-pages/man2/chdir.2.html
     //chdir return 0 if ok or 1 if any error is found. errno
-  if (change!=0){//if sucessful, chdir() returns 0.
-    printf("%s\n",strerror(errno));
-  }
+  //if (change!=0){//if sucessful, chdir() returns 0.
+    //printf("%s\n",strerror(errno));
+  //}
   free(temp);
 }
 void copyFile(char *sourcePath, char *destinationPath)
@@ -101,7 +101,7 @@ void copyFile(char *sourcePath, char *destinationPath)
               break;
           }
       }else{
-          printf("%s", "Override?(Y/N): ");//checks if it is overwritten
+          printf("%s", "Overwrite?(Y/N): ");//checks if it is overwritten
           getline(&answer,&lenght,stdin);
           if(strcmp(answer, "Y\n") == 0 || strcmp(answer, "y\n") == 0){
               unlink(destinationPath);//delete file first
@@ -114,8 +114,8 @@ void copyFile(char *sourcePath, char *destinationPath)
     free(answer);
     free(line);
     free(filename);
-
 }
+
 void moveFile(char *sourcePath, char *destinationPath){
 
   int read_code = -1;
@@ -153,7 +153,7 @@ void moveFile(char *sourcePath, char *destinationPath){
               break;
           }
       }else{
-          printf("%s", "Override?(Y/N): ");//checks if it is overwritten
+          printf("%s", "Overwrite?(Y/N): ");//checks if it is overwritten
           getline(&answer,&lenght,stdin);
           if(strcmp(answer, "Y\n") == 0 || strcmp(answer, "y\n") == 0){
             unlink(destinationPath);//delete file first
