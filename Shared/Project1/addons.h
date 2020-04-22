@@ -7,3 +7,5 @@ char* char_string(int size);
 char** array_2d(int size, int buffer);
 
 int calls(char** list, int size);
+
+//char* extract_name(char* name);

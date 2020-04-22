@@ -6,9 +6,9 @@ git:
 main:
 	@gcc -o pseudu-shell main.c command.c addons.c
 	@./pseudu-shell $(s)
-	@rm main
+	@rm pseudu-shell
 
 mainv:
-	@gcc -o main main.c command.c addons.c
-	@ valgrind ./main $(s)
-	@rm main
+	@gcc -o pseudu-shell main.c command.c addons.c
+	@ valgrind ./pseudu-shell $(s)
+	@rm pseudu-shell

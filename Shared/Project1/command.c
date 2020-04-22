@@ -39,15 +39,12 @@ void showCurrentDir()
 
 void makeDir(char *dirName)
 {
-    dirName[strlen(dirName)-1]=0;
+    //cd printf("mkdir %s\n", dirName );
     char* folder = char_string(MAX_PATH);//hold the name of the folder to create a path for mkdir()
     char* temp = sunir(1, dirName);
     strcpy(folder,temp);
-
+    //printf("%s\n", folder );
     if(mkdir(folder, 0700)==0){
-    }
-    else{
-      printf("Unable to access %s: %s\n",dirName, strerror(errno));//not for debugging but part of the program.
     }
     free(folder);
     free(temp);
@@ -55,15 +52,16 @@ void makeDir(char *dirName)
 
 void changeDir(char *dirName)//check aqui
 {
-  dirName[strlen(dirName)-1]=0;//clean the last chracter
+  char* temp= char_string(100);
+  strcpy(temp,dirName);
 
-  int change =chdir(dirName);//change for variable http://man7.org/linux/man-pages/man2/chdir.2.html
+  printf("%s\n",temp );
+  int change = chdir(temp);//change for variable http://man7.org/linux/man-pages/man2/chdir.2.html
     //chdir return 0 if ok or 1 if any error is found. errno
   if (change!=0){//if sucessful, chdir() returns 0.
     printf("%s\n",strerror(errno));
   }
 }
-
 void copyFile(char *sourcePath, char *destinationPath)
 {
   destinationPath[strlen(destinationPath)-1]= 0;//clean last character
@@ -114,7 +112,6 @@ void copyFile(char *sourcePath, char *destinationPath)
     free(answer);
     free(line);
 }
-
 void moveFile(char *sourcePath, char *destinationPath){
 
   sourcePath[strlen(sourcePath)]=0;//clean the end and set it to 0 to signal the end.
@@ -180,6 +177,7 @@ void deleteFile(char *filename){
 void displayFile(char *filename)
 {
     filename[strlen(filename)-1]=0;
+
     int read_code = -1;
     char* line = char_string(MAX_PATH);
     if (stat(filename, &st) != -1){
@@ -194,5 +192,6 @@ void displayFile(char *filename)
     }else{
         printf("%s",strerror(errno));//print statement that indicates the file is not found. It's not used for debugging but as an alert for the program itself.
     }
+
     free(line);
 }

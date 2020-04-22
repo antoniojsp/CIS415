@@ -10,13 +10,13 @@
 #define LINES 500//for the file reader. File MODE. It can accept up to 500 lines of instructions from the file.
 
 int main(int argc, char* argv[]){
-
       int exit_loop = 0;
       char** list_commands = array_2d(COMMAND_LIST,BUFFER);
       char** list = array_2d(LIST_INPUT,BUFFER);
 
       char* line_command = NULL;
       char* linea = char_string(BUFFER);
+
       char* parts = char_string(BUFFER);//divided by ;
       char* parte = parts;
 
@@ -25,17 +25,20 @@ int main(int argc, char* argv[]){
 
       //FILE MODE
       char** file_mode = array_2d(LINES, BUFFER);
-      //char* modo = char_string(10);//
+      char* modo = char_string(10);//
       //strcpy(modo, "-f");
       int lineas_file=0;
+      if(argv[1]!=NULL){
+          strcpy(modo, argv[1]);
+      }else{
+          strcpy(modo,"X");
+      }
 
-      if(strcmp(argv[1],"-f")==0){
-
+      if(strcmp(modo,"-f")==0){
           FILE *file_reader = fopen("input.txt", "r");
-          if (file_reader == NULL){// if no input.txt found
-            exit(1);
+          if (file_reader == NULL){// if no input.txt found. The program will exit
+            //exit(1);
           }
-
 
           char buffer[BUFFER];
           while(fgets(buffer,TOKEN_BUFFER, file_reader) != NULL){
@@ -45,23 +48,23 @@ int main(int argc, char* argv[]){
           fclose(file_reader);
       }
 
-
-      //printf("%d\n", lineas_file );
-      int modo_archivo = 0;
-      while(exit_loop == 0 && modo_archivo < lineas_file){
+    int modo_archivo = 0;// when -f is activated
+    while(exit_loop == 0 || modo_archivo < lineas_file){
           printf("%s",">>>");
-          if(strcmp(argv[1],"-f")!=0){
-            getline(&line_command, &size, stdin);
-            strcpy(linea,line_command);
-          }else{
+          if(strcmp(modo,"-f")==0){// argumentos
             strcpy(linea,file_mode[modo_archivo]);
             printf("%s\n",linea);
+          }else{
+            getline(&line_command, &size, stdin);
+            strcpy(linea,line_command);
           }
 
           char*line = linea;
           int number_commands = 0;// for printing the serial next to "T", for Example, "T0: mkdir lima".
+          int separador_si = 0;
           while ((parte = strtok_r(line, ";", &line))){//extract tokens and put into the array of strings.
             strcpy(list[number_commands],parte);// copy to an array of strings,  I used it this way for reuse the code in future projects.
+            separador_si++;
             number_commands+=1;
           }
 
@@ -76,9 +79,15 @@ int main(int argc, char* argv[]){
                   strcpy(token[number_tokens],parte);// copy to an array of strings,  I used it this way for reuse the code in future projects.
                   number_tokens+=1;
                 }
-                int control = calls(token,number_tokens);//function  that checks control code.
 
-                if(control == 1){
+                //printf("%d\n", number_tokens);
+                int control = calls(token,number_tokens);//function  that checks control code. If has 1 means there is only one command in the line, more than 1 is a code control error.
+
+                if (i == number_commands-1 && number_tokens > 1){// cleans the string if it is needed. The last character may interfere with the code.
+                    token[1][strlen(token[1])-1] = 0;
+                }
+
+                if(control == 1 || control == 0  ){
                     if(strcmp(token[0],"exit\n") == 0 || strcmp(token[0],"exit\0") == 0){
                         if(strcmp(token[1],"\0") == 0){
                           exit_loop = 1;
@@ -108,7 +117,6 @@ int main(int argc, char* argv[]){
                     }
                     else if(strcmp(token[0],"mkdir\n") == 0 || strcmp(token[0],"mkdir\0") == 0 ){//check for empty lines.
                       if(strcmp(token[1],"\0") != 0 && strcmp(token[2],"\0") == 0)
-
                         makeDir(token[1]);
                       else{
                         printf("Error!: Unsupported parameter for command: %s\n",list[0]);
@@ -116,6 +124,7 @@ int main(int argc, char* argv[]){
                     }
 
                     else if(strcmp(token[0],"cd\n") == 0 || strcmp(token[0],"cd\0") == 0){//check for empty lines.
+
                         if(strcmp(token[1],"\n") != 0 && strcmp(token[2],"\0") == 0 && strcmp(token[2],"\0") == 0){
                           changeDir(token[1]);
                         }
@@ -165,22 +174,29 @@ int main(int argc, char* argv[]){
                         printf("Error! Unrecognized command: %s\n", token[0]);
                     }
               }
-              else{
-                  printf("Error! Incorrect syntax. No control codefound,\n");
-              }
+                else{
+                    printf("Error! Incorrect syntax. No control codefound,\n");
+                }
               free_double(token, LIST_INPUT);
               free(temp);
         }
+
         modo_archivo++;
+        if(modo_archivo<lineas_file){
+          exit_loop = 1;
+        }
+
     }
 
     free_double(list_commands, COMMAND_LIST);
     free_double(list, LIST_INPUT);
-    free_double(file_mode,LINES);
     free(line_command);
     free(parts);
     free(linea);
+    free(modo);
     free(pieza);
+
+    free_double(file_mode,LINES);
 
 
   return 0;
