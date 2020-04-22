@@ -53,7 +53,7 @@ int main(int argc, char* argv[]){
           printf("%s",">>>");
           if(strcmp(modo,"-f")==0){// argumentos
             strcpy(linea,file_mode[modo_archivo]);
-            printf("%s\n",linea);
+            printf("%s",linea);
           }else{
             getline(&line_command, &size, stdin);
             strcpy(linea,line_command);
