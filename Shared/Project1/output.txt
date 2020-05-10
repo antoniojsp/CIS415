@@ -1,0 +1,24 @@
+>>>pwd ; mkdir test ; cd test
+/media/sf_CIS415/Shared/Project1
+>>>cd .. ; cd test ; pwd
+/media/sf_CIS415/Shared/Project1/test
+>>>cp ../input.txt . ; ls ; cat input.txt
+. .. nuevo.txt input.txt 
+pwd ; mkdir test ; cd test
+cd .. ; cd test ; pwd
+cp ../input.txt . ; ls ; cat input.txt
+mv input.txt del.txt ; pwd ; ls
+rm del.txt ; ls
+cd .. ; pwd
+ls
+
+
+>>>mv input.txt del.txt ; pwd ; ls
+/media/sf_CIS415/Shared/Project1/test
+. .. nuevo.txt del.txt 
+>>>rm del.txt ; ls
+. .. nuevo.txt 
+>>>cd .. ; pwd
+/media/sf_CIS415/Shared/Project1
+>>>ls
+. .. ~$port_Collection_Template.docx .DS_Store test pseudo-shell addons.h Makefile command.c Report_Collection_Template.pdf input.txt log.txt a.out main.c .gitignore Report_Collection_Template.docx command.h addons.c output.txt 

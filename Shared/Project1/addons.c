@@ -3,10 +3,11 @@
 #include <stdio.h>
 #include <string.h>
 #include "addons.h"
-#define MAX_PATH 260//for sunir fuction. Max number of char a path can have
+#define MAX_LINE 260//for sunir fuction. Max number of char a path can have
 #define BUFFER_LENGHT 200
 #define LISTA_COMANDOS 9
 #define ARCHIVO 30
+#define COMMAND_LINE 100
 
 void free_double(char **array, int size){
     for (int i = 0; i < size; i++) {

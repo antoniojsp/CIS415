@@ -8,8 +8,10 @@
 #define BUFFER 100//how many characters per line
 #define TOKEN_BUFFER 100
 #define LINES 500//for the file reader. File MODE. It can accept up to 500 lines of instructions from the file.
+#define FLAG 20
 
 int main(int argc, char* argv[]){
+
       int exit_loop = 0;
       char** list_commands = array_2d(COMMAND_LIST,BUFFER);
       char** list = array_2d(LIST_INPUT,BUFFER);
@@ -25,19 +27,21 @@ int main(int argc, char* argv[]){
 
       //FILE MODE
       char** file_mode = array_2d(LINES, BUFFER);
-      char* modo = char_string(10);//
+      char* modo = char_string(FLAG);//
+      char* file_input = char_string(BUFFER);
       //strcpy(modo, "-f");
       int lineas_file=0;
       if(argv[1]!=NULL){
           strcpy(modo, argv[1]);
+          strcpy(file_input, argv[2]);
       }else{
           strcpy(modo,"X");
       }
 
       if(strcmp(modo,"-f")==0){
-          FILE *file_reader = fopen("input.txt", "r");
+          FILE *file_reader = fopen(file_input, "r");
           if (file_reader == NULL){// if no input.txt found. The program will exit
-            //exit(1);
+            exit(1);// if exit, then the input file is not found.
           }
 
           char buffer[BUFFER];
@@ -47,7 +51,10 @@ int main(int argc, char* argv[]){
           }
           fclose(file_reader);// fclose allowed for main.
       }
-
+    FILE *fp;
+    if(strcmp(modo,"-f")==0){
+    fp = freopen("output.txt", "w+", stdout);
+    }
     int modo_archivo = 0;// when -f is activated
     while(exit_loop == 0 || modo_archivo < lineas_file){
           printf("%s",">>>");
@@ -88,7 +95,7 @@ int main(int argc, char* argv[]){
                     token[1][strlen(token[1])-1] = 0;
                 }
 
-                if(control == 1 || control == 0  ){
+                if(control == 1 || control == 0  ){//if not more than two commands per line then it proced.
                     if(strcmp(token[0],"exit\n") == 0 || strcmp(token[0],"exit\0" ) == 0){
                         if(number_tokens == 1){
                           exit_loop = 1;
@@ -179,7 +186,8 @@ int main(int argc, char* argv[]){
               }
                 else{
                     printf("Error! Incorrect syntax. No control codefound,\n");
-                }
+              }
+
               free_double(token, LIST_INPUT);
               free(temp);
         }
@@ -190,6 +198,9 @@ int main(int argc, char* argv[]){
         }
 
     }
+    if(strcmp(modo,"-f")==0){//close reader for output
+    fclose(fp);
+    }
 
     free_double(list_commands, COMMAND_LIST);
     free_double(list, LIST_INPUT);
@@ -198,7 +209,7 @@ int main(int argc, char* argv[]){
     free(linea);
     free(modo);
     free(pieza);
-
+    free(file_input);
     free_double(file_mode,LINES);
 
 
