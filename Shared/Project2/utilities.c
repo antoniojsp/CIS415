@@ -49,12 +49,12 @@ int get_tokens(char* line, char** tokens){
   char* temp =  section;
 
   int number_parameter = 0;// for printing the serial next to "T", for Example, "T0: mkdir lima".
-  int separador_si = 0;
   while ((parte = strtok_r(temp, " ", &temp))){//extract tokens and put into the array of strings.
     strcpy(tokens[number_parameter],parte);// copy to an array of strings,  I used it this way for reuse the code in future projects.
-    separador_si++;
     number_parameter+=1;
   }
+  tokens[number_parameter-1][strlen(tokens[number_parameter-1])-1] = 0;//fix the last token introduced to delete "\n"
+  //strcpy(tokens[number_parameter],NULL);
   free(parts);
   free(section);
 
