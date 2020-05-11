@@ -19,44 +19,27 @@ int main(int argc, char** argv){
 
   pid_t children[number_lines];
   for (int i = 0; i < number_lines; i++) {
-      // strcpy(linea, lista[i]);
-      int numero = get_tokens(lista[i],tokens);
 
-      // printf("Number %d\n",i );
-      // for (size_t i = 0; i < numero; i++) {
-      //   printf("%s\n",tokens[i]);
-      // }
-      // printf("\n");
-      // printf("Dad: %d\n",getpid() );
-      // for(int i = 0; i < numero; i++) {
-      pid_t pid = fork();
-      if(pid<0){
-        // printf("%s\n","Algo salio mal" );
+      int numero = get_tokens(lista[i],tokens);
+      pid_t pid = fork();//fork process
+
+      if(pid<0){// if fails
         break;
       }
       if(pid == 0) { //this is the child (don't forget to check for errors and what-not)
-        // char *args[]={tokens[0],tokens};
-        // printf("children %d\n", getpid());
-        tokens[numero] = NULL;
-        for (size_t i = 0; i < numero+1; i++) {
-          /* code */
-          printf("%s ",tokens[i]);
-        }
-        printf("\n");
+        tokens[numero] = NULL;//add NULL at the end to indicatethe end.
+        // printf("Open: %s %d\n", tokens[0], getpid() );
         execvp(tokens[0],tokens);
-        exit(1);
+        // printf("%s %d\n","Fallo", getpid() );
+        exit(1);//case it fails
       }
       else{
         children[i] =  pid;
       }
-      // }
-
-      // }
   }
   for(int j = 0; j < number_lines; j++){
-      waitpid(children[j], NULL, 0);
-    }
-
+       wait(0);
+  }
 
   free(linea);
   free2d(tokens, TOKENS_NUMBER);

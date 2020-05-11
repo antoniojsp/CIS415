@@ -12,10 +12,10 @@ void free2d(char **array, int size){
         free(array[i]);
     }
     free(array);
-}
+}//free 2d array
 char* char_one(int size){
     return (char*)calloc(size,sizeof(char));
-}
+}//create one dimmension array char, one string
 char** char_two(int size, int buffer){
 	char** array = (char**)calloc(size,sizeof(char*));
 	for(size_t i = 0; i < size; i++)
@@ -23,8 +23,8 @@ char** char_two(int size, int buffer){
 			array[i] = (char*)calloc(buffer,sizeof(char));
 	}
 	return array;
-}
-int read_file(char** file_name, char** lista){
+}// create 2d array of char, strings
+int read_file(char** file_name, char** lista){//read input file.
 
   FILE *file_reader = fopen(file_name[1], "r");
   if (file_reader == NULL){// if no input.txt found. The program will exit
@@ -53,8 +53,7 @@ int get_tokens(char* line, char** tokens){
     strcpy(tokens[number_parameter],parte);// copy to an array of strings,  I used it this way for reuse the code in future projects.
     number_parameter+=1;
   }
-  tokens[number_parameter-1][strlen(tokens[number_parameter-1])-1] = 0;//fix the last token introduced to delete "\n"
-  //strcpy(tokens[number_parameter],NULL);
+  tokens[number_parameter-1][strlen(tokens[number_parameter-1])-1] = 0;//fix the last token introduced to
   free(parts);
   free(section);
 
