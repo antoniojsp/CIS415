@@ -2,6 +2,7 @@
 #include <stdlib.h>//calloc, malloc
 #include <stdio.h>
 #include <string.h>
+#include <unistd.h>
 #define BUFFER_LENGTH 50//number of char per line in input
 #define TOKENS_NUMBER 50//number of parameters per line
 #define PARAMETER_LENGTH 10//number of character per paramaenter
@@ -59,4 +60,11 @@ int get_tokens(char* line, char** tokens){
 
   return number_parameter;
 
+}
+
+void back_timer(int sec){
+  for (int i = 0; i < sec; i++) {
+    printf("* In %d seconds.\n", (5 - i));
+    sleep(1);
+  }
 }

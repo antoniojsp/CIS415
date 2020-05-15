@@ -1,5 +1,7 @@
 ls -a -r -s
 sleep 1
+./hola 12
+./hello
 invalid name
 ./iobound -seconds 5
 ./cpubound -seconds 5

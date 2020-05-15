@@ -6,16 +6,29 @@
 #include <sys/wait.h>//waitpid
 #include <signal.h>
 #include "utilities.h"
+#include <wait.h>
+
+
+// #define PROCESS_TIME 3
 #define NUMBER_LINES 50
 #define BUFFER_LENGTH 50//number of char per line in input
 #define TOKENS_NUMBER 10//number of parameters per line
 #define PARAMETER_LENGTH 40//number of character per paramaenter
 
+
+
+
 int indicator = 1;//if 1, true and while loop continue
 void continue_loop(int signo){// gets signals and change indicator to be able to continue with the loop.
-    printf("%s\n","* Signal sent to continue with exec." );
+    // printf("%s\n","* Signal sent to continue with exec." );
     indicator = 0;
 }
+
+int tiempo = 1;//if 1, true and while loop continue
+void relog(int signo){
+    tiempo = 0;
+}
+
 
 int main(int argc, char** argv){
 
@@ -24,9 +37,9 @@ int main(int argc, char** argv){
   char **tokens= char_two(TOKENS_NUMBER, PARAMETER_LENGTH);//where we storage the tokens
   char* linea = char_one(BUFFER_LENGTH);//save a line at the time
 
-  pid_t children[number_lines];//save the porcesses running
+  pid_t child[number_lines];//save the porcesses running
 
-  if (signal(SIGUSR1, continue_loop) == SIG_ERR) {// to get the signals
+  if (signal(SIGUSR1, continue_loop) == SIG_ERR || signal(SIGALRM, relog) == SIG_ERR) {// to get the signals
       return -1;
   }
 
@@ -51,30 +64,51 @@ int main(int argc, char** argv){
         exit(1);//case it fails
       }
       else{
-        children[i] =  pid;
+        child[i] =  pid;//save the children in an array to start and stop later.
       }
   }
   sleep(1);
-  printf("%s\n","* Waiting 5 seconds to start with exec.");
-  back_timer(5);//timer to see how the exec are started in the fork processess.
-  printf("%s\n", "* Continue with exec.");
 
-  for (int i = 0; i < number_lines; i++) {// start the programs
-      kill(children[i], SIGUSR1);
+  for (int i = 0; i < number_lines; i++) {
+    kill(child[i],SIGUSR1);
+    kill(child[i],SIGSTOP);
+    // printf("%s\n","program exec and stop" );
   }
 
-  printf("%s\n","* Stop all programs in 5 seconds.");
-  sleep(5);
-  for (int i = 0; i < number_lines; i++) {//pause the programs
-      kill(children[i], SIGSTOP);
-  }
-  printf("%s\n","* All process stop for 5 seconds. " );
+  int status;// to save the status
+  int i = 0;
+  int suma = 0;
+  int *done = (int*)calloc(number_lines,sizeof(int));
+  while(1) {
+    int finish = waitpid(child[i], &status, WNOHANG);
+    if (finish == 0)//if it is not finish, it gives 0
+    {
+      kill(child[i], SIGCONT);
+      tiempo = 1;
+      alarm(3);
+      while(tiempo){}
+      kill(child[i], SIGSTOP);
+    }
 
-  back_timer(5);//timer to wait till revive the process
+    int finish1 = waitpid(child[i], &status, WNOHANG);
 
-  for (int i = 0; i < number_lines; i++) {// restart the programs
-      kill(children[i], SIGCONT);
+    if(finish1!=0){
+      done[i] = 1;
+    }
+
+    int sumatoria = 0;
+    for (int i = 0; i < number_lines; i++) {
+      sumatoria = sumatoria + done[i];
+    }
+    if(sumatoria >= number_lines){
+      break;
+    }
+    i++;
+    if(i>number_lines-1){
+      i = 0;
+    }
   }
+
 
   printf("%s\n", "* Continue with all process and waiting for all the process to be done and then kill the parent.");
   for(int j = 0; j < number_lines; j++){

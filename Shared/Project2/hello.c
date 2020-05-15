@@ -4,6 +4,13 @@
 #include <sys/types.h>
 #include <sys/wait.h>
 int main(){
-  printf("%s %d\n", "Hello World!",getpid());
+  int contador = 0;
+  for (size_t i = 0; i < 10; i++) {
+    printf("Second Test Program. Time: %d\n", contador);
+    contador++;
+    sleep(1);
+  }
+  printf("%s\n","Done with second test program. Exit!" );
+
   return 0;
 }
