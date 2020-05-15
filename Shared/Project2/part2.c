@@ -18,6 +18,9 @@ void continue_loop(int signo){// gets signals and change indicator to be able to
 }
 
 int main(int argc, char** argv){
+  char bucle[30] ="##############################";
+
+  printf("%s %s %s\n", bucle,"Part 2",bucle);
 
   char** lista = char_two(NUMBER_LINES, BUFFER_LENGTH);// linea de comandos
   int number_lines = read_file(argv, lista);// lineas enteras

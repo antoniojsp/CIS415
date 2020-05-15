@@ -101,6 +101,7 @@ int main(void)
             sleep(1);
           }
           execvp(args[0],args);
+          
           exit(1);
     }
     kill(pid,SIGUSR1);

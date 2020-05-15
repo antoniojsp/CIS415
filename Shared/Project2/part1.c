@@ -11,6 +11,9 @@
 #define PARAMETER_LENGTH 40//number of character per paramaenter
 
 int main(int argc, char** argv){
+  char bucle[30] ="##############################";
+
+  printf("%s %s %s\n", bucle,"Part 1",bucle);
 
   char** lista = char_two(NUMBER_LINES, BUFFER_LENGTH);// linea de comandos
   int number_lines = read_file(argv, lista);// lineas enteras
