@@ -5,9 +5,9 @@
 #include <sys/wait.h>
 int main(){
   int contador = 0;
-  for (size_t i = 0; i < 1000; i++) {
+  for (size_t i = 0; i < 12; i++) {
     printf("Second Test Program. Time: %d\n", contador);
-    printf("PID %d\n", getpid());
+    // printf("PID %d\n", getpid());
     contador++;
     sleep(1);
   }

@@ -11,9 +11,8 @@
 #define PARAMETER_LENGTH 40//number of character per paramaenter
 
 int main(int argc, char** argv){
-  char bucle[30] ="##############################";
+  printf("%s\n"," ################### Part1 ################### " );
 
-  printf("%s %s %s\n", bucle,"Part 1",bucle);
 
   char** lista = char_two(NUMBER_LINES, BUFFER_LENGTH);// linea de comandos
   int number_lines = read_file(argv, lista);// lineas enteras
@@ -31,9 +30,7 @@ int main(int argc, char** argv){
       }
       if(pid == 0) { //this is the child (don't forget to check for errors and what-not)
         tokens[numero] = NULL;//add NULL at the end to indicatethe end.
-        // printf("Open: %s %d\n", tokens[0], getpid() );
         execvp(tokens[0],tokens);
-        // printf("%s %d\n","Fallo", getpid() );
         exit(1);//case it fails
       }
       else{

@@ -18,9 +18,7 @@ void continue_loop(int signo){// gets signals and change indicator to be able to
 }
 
 int main(int argc, char** argv){
-  char bucle[30] ="##############################";
-
-  printf("%s %s %s\n", bucle,"Part 2",bucle);
+  printf("%s\n"," ################### Part2 ################### " );
 
   char** lista = char_two(NUMBER_LINES, BUFFER_LENGTH);// linea de comandos
   int number_lines = read_file(argv, lista);// lineas enteras
@@ -43,7 +41,6 @@ int main(int argc, char** argv){
         break;
       }
       if(pid == 0) { //pid 0 indicates child
-        // printf("%s\n", "hola");
         tokens[numero] = NULL;//add NULL at the end to indicate the end of the array. requires for execvp
         printf("* Program %d fork and waiting.\n",i);
         indicator = 1;// set to 1 to keep the loop rolling till the signal is sent and the value is changed to 1.
